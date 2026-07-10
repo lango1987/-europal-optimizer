@@ -47,8 +47,7 @@ function calculate() {
     document.getElementById("layer").textContent = currentPattern.cartons;
     document.getElementById("layers").textContent = layers;
     document.getElementById("total").textContent = total;
-    document.getElementById("utilization").textContent =
-        currentPattern.utilization + " %";
+  alert(currentPattern.utilization);
 
     drawPalette(currentPattern, currentLayer);
 
