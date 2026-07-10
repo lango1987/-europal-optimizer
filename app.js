@@ -1,50 +1,54 @@
-document.getElementById("calculate").addEventListener("click", calculate);
+document.addEventListener("DOMContentLoaded", () => {
 
-function calculate() {
+    let currentPattern = null;
+    let currentLayer = 1;
 
-    const layout = {
+    document.getElementById("calculate").addEventListener("click", () => {
 
-        pallet: document.getElementById("pallet").value,
+        const length = Number(document.getElementById("length").value);
+        const width = Number(document.getElementById("width").value);
+        const height = Number(document.getElementById("height").value);
+        const maxHeight = Number(document.getElementById("maxHeight").value);
 
-        length: Number(document.getElementById("length").value),
+        if (!length || !width || !height || !maxHeight) {
+            alert("Bitte alle Werte eingeben.");
+            return;
+        }
 
-        width: Number(document.getElementById("width").value),
+        const patterns = optimize(length, width);
+        currentPattern = patterns[0];
 
-        height: Number(document.getElementById("height").value),
+        const palletHeight = 144;
+        const layers = Math.floor((maxHeight - palletHeight) / height);
+        const total = currentPattern.cartons * layers;
 
-        weight: Number(document.getElementById("weight").value),
+        document.getElementById("layer").textContent = currentPattern.cartons;
+        document.getElementById("layers").textContent = layers;
+        document.getElementById("total").textContent = total;
 
-        maxHeight: Number(document.getElementById("maxHeight").value)
+        const palletArea = 1200 * 800;
+        const usedArea = currentPattern.cartons * length * width;
+        const utilization = ((usedArea / palletArea) * 100).toFixed(1);
 
-    };
+        document.getElementById("utilization").textContent = utilization + " %";
 
-    if (
-        !layout.length ||
-        !layout.width ||
-        !layout.height ||
-        !layout.maxHeight
-    ) {
-        alert("Bitte alle Maße eingeben.");
-        return;
-    }
+        currentLayer = 1;
+        drawPalette(currentPattern, currentLayer);
 
-    const result = optimize(layout)[0];
+    });
 
-    const palletHeight =
-        layout.pallet === "industry" ? 144 : 144;
+    document.getElementById("layer1").addEventListener("click", () => {
+        if (currentPattern) {
+            currentLayer = 1;
+            drawPalette(currentPattern, currentLayer);
+        }
+    });
 
-    const layers = Math.floor(
-        (layout.maxHeight - palletHeight) / layout.height
-    );
+    document.getElementById("layer2").addEventListener("click", () => {
+        if (currentPattern) {
+            currentLayer = 2;
+            drawPalette(currentPattern, currentLayer);
+        }
+    });
 
-    const total = result.total * layers;
-
-    document.getElementById("layer").textContent = result.total;
-    document.getElementById("layers").textContent = layers;
-    document.getElementById("total").textContent = total;
-    document.getElementById("utilization").textContent =
-        result.utilization.toFixed(1) + " %";
-        drawPalette(result, 1);
-
-    // Das Zeichnen bauen wir im nächsten Schritt ein.
-}
+});
