@@ -1,54 +1,84 @@
-document.addEventListener("DOMContentLoaded", () => {
+let currentPattern = null;
+let currentLayer = 1;
+let patterns = [];
 
-    let currentPattern = null;
-    let currentLayer = 1;
+document.getElementById("calculate").addEventListener("click", () => {
 
-    document.getElementById("calculate").addEventListener("click", () => {
+    const length = Number(document.getElementById("length").value);
+    const width = Number(document.getElementById("width").value);
+    const height = Number(document.getElementById("height").value);
+    const maxHeight = Number(document.getElementById("maxHeight").value);
 
-        const length = Number(document.getElementById("length").value);
-        const width = Number(document.getElementById("width").value);
-        const height = Number(document.getElementById("height").value);
-        const maxHeight = Number(document.getElementById("maxHeight").value);
+    if (!length || !width || !height || !maxHeight) {
+        alert("Bitte alle Maße eingeben.");
+        return;
+    }
 
-        if (!length || !width || !height || !maxHeight) {
-            alert("Bitte alle Werte eingeben.");
-            return;
-        }
+    patterns = optimize(length, width);
 
-        const patterns = optimize(length, width);
-        currentPattern = patterns[0];
+    currentPattern = patterns[0];
 
-        const palletHeight = 144;
-        const layers = Math.floor((maxHeight - palletHeight) / height);
-        const total = currentPattern.cartons * layers;
+    const layers = Math.floor((maxHeight - 144) / height);
 
-        document.getElementById("layer").textContent = currentPattern.cartons;
-        document.getElementById("layers").textContent = layers;
-        document.getElementById("total").textContent = total;
+    document.getElementById("layer").textContent = currentPattern.cartons;
+    document.getElementById("layers").textContent = layers;
+    document.getElementById("total").textContent =
+        currentPattern.cartons * layers;
 
-        const palletArea = 1200 * 800;
-        const usedArea = currentPattern.cartons * length * width;
-        const utilization = ((usedArea / palletArea) * 100).toFixed(1);
+    drawPalette(currentPattern, 1);
 
-        document.getElementById("utilization").textContent = utilization + " %";
-
-        currentLayer = 1;
-        drawPalette(currentPattern, currentLayer);
-
-    });
-
-    document.getElementById("layer1").addEventListener("click", () => {
-        if (currentPattern) {
-            currentLayer = 1;
-            drawPalette(currentPattern, currentLayer);
-        }
-    });
-
-    document.getElementById("layer2").addEventListener("click", () => {
-        if (currentPattern) {
-            currentLayer = 2;
-            drawPalette(currentPattern, currentLayer);
-        }
-    });
-
+    showVariants();
 });
+
+function showVariants() {
+
+    const list = document.getElementById("variantList");
+
+    list.innerHTML = "";
+
+    patterns.forEach((pattern, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "variantButton";
+
+        button.innerHTML =
+            `<b>${pattern.type}</b><br>${pattern.cartons} Kartons`;
+
+        button.onclick = () => {
+
+            currentPattern = pattern;
+
+            drawPalette(currentPattern, currentLayer);
+
+        };
+
+        list.appendChild(button);
+
+    });
+
+}
+
+document.getElementById("layer1").onclick = () => {
+
+    currentLayer = 1;
+
+    if(currentPattern){
+
+        drawPalette(currentPattern,1);
+
+    }
+
+}
+
+document.getElementById("layer2").onclick = () => {
+
+    currentLayer = 2;
+
+    if(currentPattern){
+
+        drawPalette(currentPattern,2);
+
+    }
+
+}
