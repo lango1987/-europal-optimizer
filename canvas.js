@@ -3,16 +3,15 @@ function drawPalette(pattern, layer = 1) {
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const pallet = pattern.pallet;
 
-    const palletLength = 1200;
-    const palletWidth = 800;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const margin = 20;
 
     const scale = Math.min(
-        (canvas.width - margin * 2) / palletLength,
-        (canvas.height - margin * 2) / palletWidth
+        (canvas.width - margin * 2) / pallet.length,
+        (canvas.height - margin * 2) / pallet.width
     );
 
     // Palette
@@ -21,25 +20,26 @@ function drawPalette(pattern, layer = 1) {
     ctx.strokeRect(
         margin,
         margin,
-        palletLength * scale,
-        palletWidth * scale
+        pallet.length * scale,
+        pallet.width * scale
     );
 
     ctx.fillStyle = "#4CAF50";
     ctx.strokeStyle = "#2E7D32";
+    ctx.lineWidth = 1;
 
-    pattern.boxes.forEach((box) => {
+    pattern.boxes.forEach(box => {
 
         let x = box.x;
         let y = box.y;
 
-        // Lage 2 wird versetzt dargestellt
+        // Lage 2 versetzt
         if (layer === 2 && Math.floor(box.y / box.width) % 2 === 0) {
             x += box.length / 2;
         }
 
-        // Nicht über Palettenrand zeichnen
-        if (x + box.length <= palletLength) {
+        // Nur innerhalb der Palette zeichnen
+        if (x + box.length <= pallet.length) {
 
             ctx.fillRect(
                 margin + x * scale,
@@ -54,6 +54,7 @@ function drawPalette(pattern, layer = 1) {
                 box.length * scale - 2,
                 box.width * scale - 2
             );
+
         }
 
     });
