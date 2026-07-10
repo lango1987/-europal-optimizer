@@ -15,44 +15,47 @@ function drawPalette(pattern, layer = 1) {
         (canvas.height - margin * 2) / palletWidth
     );
 
-    const palletX = margin;
-    const palletY = margin;
-
-    // Palette zeichnen
-    ctx.strokeStyle = "#444";
+    // Palette
+    ctx.strokeStyle = "#333";
     ctx.lineWidth = 3;
     ctx.strokeRect(
-        palletX,
-        palletY,
+        margin,
+        margin,
         palletLength * scale,
         palletWidth * scale
     );
 
-    const boxW = pattern.boxLength * scale;
-    const boxH = pattern.boxWidth * scale;
-
     ctx.fillStyle = "#4CAF50";
     ctx.strokeStyle = "#2E7D32";
 
-    for (let row = 0; row < pattern.rows; row++) {
+    pattern.boxes.forEach((box) => {
 
-        let offset = 0;
+        let x = box.x;
+        let y = box.y;
 
         // Lage 2 wird versetzt dargestellt
-        if (layer === 2 && row % 2 === 0) {
-            offset = boxW / 2;
+        if (layer === 2 && Math.floor(box.y / box.width) % 2 === 0) {
+            x += box.length / 2;
         }
 
-        for (let col = 0; col < pattern.cols; col++) {
+        // Nicht über Palettenrand zeichnen
+        if (x + box.length <= palletLength) {
 
-            const x = palletX + offset + col * boxW;
-            const y = palletY + row * boxH;
+            ctx.fillRect(
+                margin + x * scale,
+                margin + y * scale,
+                box.length * scale - 2,
+                box.width * scale - 2
+            );
 
-            // Nicht über den Palettenrand zeichnen
-            if (x + boxW <= palletX + palletLength * scale) {
-                ctx.fillRect(x, y, boxW - 2, boxH - 2);
-                ctx.strokeRect(x, y, boxW - 2, boxH - 2);
-            }
+            ctx.strokeRect(
+                margin + x * scale,
+                margin + y * scale,
+                box.length * scale - 2,
+                box.width * scale - 2
+            );
         }
-    }
+
+    });
+
 }
