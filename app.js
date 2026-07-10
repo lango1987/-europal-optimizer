@@ -19,20 +19,15 @@ document.getElementById("calculate").addEventListener("click", () => {
     currentPattern = patterns[0];
 
     const layers = Math.floor((maxHeight - 144) / height);
+    const total = currentPattern.cartons * layers;
 
     document.getElementById("layer").textContent = currentPattern.cartons;
     document.getElementById("layers").textContent = layers;
-    document.getElementById("total").textContent =
-        currentPattern.cartons * layers;
+    document.getElementById("total").textContent = total;
 
-    const palletArea = 1200 * 800;
-    const usedArea =
-        currentPattern.cartons *
-        currentPattern.boxLength *
-        currentPattern.boxWidth;
-
+    // Auslastung direkt aus optimizer.js übernehmen
     document.getElementById("utilization").textContent =
-        ((usedArea / palletArea) * 100).toFixed(1) + " %";
+        currentPattern.utilization + " %";
 
     currentLayer = 1;
 
@@ -45,7 +40,6 @@ document.getElementById("calculate").addEventListener("click", () => {
 function showVariants() {
 
     const list = document.getElementById("variantList");
-
     list.innerHTML = "";
 
     patterns.forEach((pattern, index) => {
@@ -61,12 +55,17 @@ function showVariants() {
         button.innerHTML = `
             <strong>${pattern.type}</strong><br>
             📦 ${pattern.cartons} Kartons<br>
-            📐 ${pattern.cols} × ${pattern.rows}
+            📐 ${pattern.cols} × ${pattern.rows}<br>
+            📊 ${pattern.utilization} %
         `;
 
         button.onclick = () => {
 
             currentPattern = pattern;
+
+            document.getElementById("layer").textContent = currentPattern.cartons;
+            document.getElementById("utilization").textContent =
+                currentPattern.utilization + " %";
 
             drawPalette(currentPattern, currentLayer);
 
