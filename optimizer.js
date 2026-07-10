@@ -1,73 +1,32 @@
 const PALLETS = {
-  euro: {
-    name: "Europalette",
-    length: 1200,
-    width: 800,
-    height: 144
-  },
-  industry: {
-    name: "Industriepalette",
-    length: 1200,
-    width: 1000,
-    height: 144
-  }
+    euro: { length: 1200, width: 800, height: 144 }
 };
 
-function optimize(layout) {
+function optimize(boxLength, boxWidth) {
 
-    const pallet = PALLETS[layout.pallet];
+    const pallet = PALLETS.euro;
 
     const variants = [];
 
-    variants.push(createPattern(
-        "Standard",
-        pallet,
-        layout.length,
-        layout.width
-    ));
+    variants.push(createPattern("Standard", pallet, boxLength, boxWidth));
+    variants.push(createPattern("Gedreht", pallet, boxWidth, boxLength));
 
-    variants.push(createPattern(
-        "Gedreht",
-        pallet,
-        layout.width,
-        layout.length
-    ));
-
-    variants.sort((a,b)=>b.total-a.total);
+    variants.sort((a, b) => b.cartons - a.cartons);
 
     return variants;
-
 }
 
-function createPattern(name,pallet,l,w){
+function createPattern(name, pallet, l, w) {
 
-    const cols=Math.floor(pallet.length/l);
-    const rows=Math.floor(pallet.width/w);
+    const cols = Math.floor(pallet.length / l);
+    const rows = Math.floor(pallet.width / w);
 
-    const cartons=cols*rows;
-
-    const palletArea=pallet.length*pallet.width;
-
-    const usedArea=cartons*l*w;
-
-    const utilization=(usedArea/palletArea)*100;
-
-    return{
-
-        name:name,
-
-        cols:cols,
-
-        rows:rows,
-
-        total:cartons,
-
-        utilization:utilization,
-
-        length:l,
-
-        width:w
-
+    return {
+        name,
+        cols,
+        rows,
+        cartons: cols * rows,
+        boxLength: l,
+        boxWidth: w
     };
-
 }
