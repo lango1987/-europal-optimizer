@@ -16,7 +16,7 @@ function optimize(boxLength, boxWidth) {
         let l = boxLength;
         let w = boxWidth;
 
-        switch(pattern.id){
+        switch (pattern.id) {
 
             case "rotated":
                 l = boxWidth;
@@ -39,47 +39,51 @@ function optimize(boxLength, boxWidth) {
 
     });
 
-    variants.sort((a,b)=>b.cartons-a.cartons);
+    variants.sort((a, b) => b.cartons - a.cartons);
 
     return variants;
 
 }
 
-function createPattern(pattern,pallet,l,w){
+function createPattern(pattern, pallet, l, w) {
 
-    const cols=Math.floor(pallet.length/l);
-    const rows=Math.floor(pallet.width/w);
+    const cols = Math.floor(pallet.length / l);
+    const rows = Math.floor(pallet.width / w);
 
-    const boxes=[];
+    const boxes = [];
 
-    for(let y=0;y<rows;y++){
+    for (let y = 0; y < rows; y++) {
 
-        for(let x=0;x<cols;x++){
+        for (let x = 0; x < cols; x++) {
 
             boxes.push({
-
-                x:x*l,
-                y:y*w,
-                length:l,
-                width:w,
-                rotation:0
-
+                x: x * l,
+                y: y * w,
+                length: l,
+                width: w,
+                rotation: 0
             });
 
         }
 
     }
 
-    return{
+    const cartons = boxes.length;
+    const palletArea = pallet.length * pallet.width;
+    const usedArea = cartons * l * w;
+    const utilization = ((usedArea / palletArea) * 100).toFixed(1);
 
-        id:pattern.id,
-        type:pattern.name,
-        cartons:boxes.length,
-        cols,
-        rows,
-        boxLength:l,
-        boxWidth:w,
-        boxes
+    return {
+
+        id: pattern.id,
+        type: pattern.name,
+        cartons: cartons,
+        cols: cols,
+        rows: rows,
+        boxLength: l,
+        boxWidth: w,
+        utilization: utilization,
+        boxes: boxes
 
     };
 
