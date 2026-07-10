@@ -1,113 +1,88 @@
+Ersetze den kompletten Inhalt deiner index.html mit diesem Code:
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Europal Optimizer Pro</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Europal Optimizer Pro</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-
+<header class="header">
 <h1>📦 Europal Optimizer Pro</h1>
-
 </header>
 
-<main>
+<div class="container">
 
-<section class="left">
+<div class="sidebar">
 
-<h2>Palettendaten</h2>
+<h2>Berechnung</h2>
 
-<label>Palette</label>
+<label>Kartonlänge</label>
+<input id="length" type="number" placeholder="mm">
 
-<select id="pallet">
+<label>Kartonbreite</label>
+<input id="width" type="number" placeholder="mm">
 
-<option value="euro">Europalette 1200 × 800</option>
+<label>Kartonhöhe</label>
+<input id="height" type="number" placeholder="mm">
 
-<option value="industry">Industriepalette 1200 × 1000</option>
-
-<option value="custom">Eigene Palette</option>
-
-</select>
-
-<label>Länge (mm)</label>
-<input id="length" type="number">
-
-<label>Breite (mm)</label>
-<input id="width" type="number">
-
-<label>Höhe (mm)</label>
-<input id="height" type="number">
-
-<label>Gewicht (kg)</label>
-<input id="weight" type="number">
-
-<label>Max. Stapelhöhe (mm)</label>
+<label>Max. Höhe</label>
 <input id="maxHeight" type="number" value="1800">
 
 <button id="calculate">
 Optimieren
 </button>
 
-</section>
+</div>
 
-<section class="right">
+<div class="content">
 
 <div class="cards">
 
 <div class="card">
-
 <h3>Kartons/Lage</h3>
-
 <p id="layer">0</p>
-
 </div>
 
 <div class="card">
-
 <h3>Lagen</h3>
-
 <p id="layers">0</p>
-
 </div>
 
 <div class="card">
-
 <h3>Gesamt</h3>
-
 <p id="total">0</p>
-
 </div>
 
 <div class="card">
-
 <h3>Auslastung</h3>
-
-<p id="utilization">0 %</p>
-
+<p id="utilization">0%</p>
 </div>
 
 </div>
 
 <canvas id="canvas" width="900" height="600"></canvas>
 
-<div class="layerButtons">
+<div class="buttons">
 
-<button>Lage 1</button>
+<button id="layer1">
+Lage 1
+</button>
 
-<button>Lage 2</button>
-
-<button>Beste Variante</button>
+<button id="layer2">
+Lage 2
+</button>
 
 </div>
 
-</section>
+</div>
 
-</main>
+</div>
 
 <script src="optimizer.js"></script>
 <script src="canvas.js"></script>
