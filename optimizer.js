@@ -41,6 +41,8 @@ function optimize(boxLength, boxWidth) {
 
     variants.sort((a, b) => b.cartons - a.cartons);
 
+console.log(utilization);
+    
     return variants;
 
 }
