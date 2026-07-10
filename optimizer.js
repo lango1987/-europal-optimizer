@@ -47,30 +47,33 @@ function createPattern(pattern, pallet, boxLength, boxWidth) {
 
     }
 
-    const cartons = boxes.length;
-    const palletArea = pallet.length * pallet.width;
-    const usedArea = cartons * boxLength * boxWidth;
+ const cartons = boxes.length;
 
-    return {
+const palletArea = pallet.length * pallet.width;
 
-        id: pattern.id,
-        type: pattern.name,
+const usedArea = cartons * (boxLength * boxWidth);
 
-        pallet,
+const utilization =
+    Math.round((usedArea / palletArea) * 1000) / 10;
 
-        cartons,
-        cols,
-        rows,
+return {
 
-        boxLength,
-        boxWidth,
+    id: pattern.id,
+    type: pattern.name,
 
-        utilization: Number(
-            (usedArea / palletArea * 100).toFixed(1)
-        ),
+    pallet: pallet,
 
-        boxes
+    cartons: cartons,
+    cols: cols,
+    rows: rows,
 
-    };
+    boxLength: boxLength,
+    boxWidth: boxWidth,
+
+    utilization: utilization,
+
+    boxes: boxes
+
+};
 
 }
