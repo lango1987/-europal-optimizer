@@ -1,1 +1,25 @@
+const PALLETS = {
+    euro: {
+        id: "euro",
+        name: "Europalette",
+        length: 1200,
+        width: 800,
+        height: 144
+    },
 
+    industry: {
+        id: "industry",
+        name: "Industriepalette",
+        length: 1200,
+        width: 1000,
+        height: 144
+    }
+};
+
+function getSelectedPallet() {
+
+    const value = document.getElementById("pallet").value;
+
+    return PALLETS[value];
+
+}
