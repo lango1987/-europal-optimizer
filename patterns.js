@@ -5,6 +5,10 @@ function getPatterns() {
             name: "Standard"
         },
         {
+            id: "rotated",
+            name: "Gedreht"
+        },
+        {
             id: "brick",
             name: "Kreuzverband"
         },
