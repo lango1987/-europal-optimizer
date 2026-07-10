@@ -1,99 +1,103 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Europal Optimizer Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Europal Optimizer Pro 2.0</title>
 
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-<header class="header">
-<h1>📦 Europal Optimizer Pro</h1>
+<header class="topbar">
+    <h1>📦 Europal Optimizer Pro 2.0</h1>
 </header>
 
-<div class="container">
+<div class="app">
 
-<div class="sidebar">
+    <aside class="sidebar">
 
-<h2>Berechnung</h2>
+        <h2>Berechnung</h2>
 
-<label>Kartonlänge (mm)</label>
-<input id="length" type="number" placeholder="300">
+        <label>Palette</label>
+        <select id="pallet">
+            <option value="euro">Europalette 1200 × 800</option>
+            <option value="industry">Industriepalette 1200 × 1000</option>
+        </select>
 
-<label>Kartonbreite (mm)</label>
-<input id="width" type="number" placeholder="200">
+        <label>Kartonlänge (mm)</label>
+        <input id="length" type="number" placeholder="300">
 
-<label>Kartonhöhe (mm)</label>
-<input id="height" type="number" placeholder="150">
+        <label>Kartonbreite (mm)</label>
+        <input id="width" type="number" placeholder="200">
 
-<label>Maximale Stapelhöhe (mm)</label>
-<input id="maxHeight" type="number" value="1800">
+        <label>Kartonhöhe (mm)</label>
+        <input id="height" type="number" placeholder="150">
 
-<button id="calculate">
-Optimieren
-</button>
+        <label>Gewicht (kg)</label>
+        <input id="weight" type="number" value="0">
+
+        <label>Maximale Höhe (mm)</label>
+        <input id="maxHeight" type="number" value="1800">
+
+        <button id="calculate">
+            Optimieren
+        </button>
+
+    </aside>
+
+    <main class="workspace">
+
+        <section class="cards">
+
+            <div class="card">
+                <span>Kartons / Lage</span>
+                <h2 id="layer">0</h2>
+            </div>
+
+            <div class="card">
+                <span>Lagen</span>
+                <h2 id="layers">0</h2>
+            </div>
+
+            <div class="card">
+                <span>Gesamt</span>
+                <h2 id="total">0</h2>
+            </div>
+
+            <div class="card">
+                <span>Auslastung</span>
+                <h2 id="utilization">0 %</h2>
+            </div>
+
+        </section>
+
+        <section class="viewer">
+
+            <canvas id="canvas" width="1000" height="650"></canvas>
+
+        </section>
+
+        <section class="toolbar">
+
+            <button id="layer1">Lage 1</button>
+            <button id="layer2">Lage 2</button>
+
+        </section>
+
+        <section class="variants">
+
+            <h2>Optimierungsvarianten</h2>
+
+            <div id="variantList"></div>
+
+        </section>
+
+    </main>
 
 </div>
 
-<div class="content">
-
-<div class="cards">
-
-<div class="card">
-<h3>Kartons/Lage</h3>
-<p id="layer">0</p>
-</div>
-
-<div class="card">
-<h3>Lagen</h3>
-<p id="layers">0</p>
-</div>
-
-<div class="card">
-<h3>Gesamt</h3>
-<p id="total">0</p>
-</div>
-
-<div class="card">
-<h3>Auslastung</h3>
-<p id="utilization">0 %</p>
-</div>
-
-</div>
-
-<div class="variants">
-
-<h2>Optimierungsvarianten</h2>
-
-<div id="variantList">
-
-<p>Noch keine Berechnung durchgeführt.</p>
-
-</div>
-
-</div>
-
-<canvas id="canvas" width="900" height="600"></canvas>
-
-<div class="buttons">
-
-<button id="layer1">
-Lage 1
-</button>
-
-<button id="layer2">
-Lage 2
-</button>
-
-</div>
-
-</div>
-
-</div>
-
+<script src="pallets.js"></script>
 <script src="patterns.js"></script>
 <script src="optimizer.js"></script>
 <script src="canvas.js"></script>
