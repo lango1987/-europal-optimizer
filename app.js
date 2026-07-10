@@ -37,6 +37,9 @@ function showVariants() {
     list.innerHTML = "";
 
     patterns.forEach((pattern, index) => {
+        if (index === 0) {
+    button.style.background = "#2E7D32";
+}
 
         const button = document.createElement("button");
 
