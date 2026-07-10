@@ -1,49 +1,113 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Europal Optimizer</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Europal Optimizer Pro</title>
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+<header>
 
-<h1>📦 Europal Optimizer</h1>
+<h1>📦 Europal Optimizer Pro</h1>
+
+</header>
+
+<main>
+
+<section class="left">
+
+<h2>Palettendaten</h2>
+
+<label>Palette</label>
+
+<select id="pallet">
+
+<option value="euro">Europalette 1200 × 800</option>
+
+<option value="industry">Industriepalette 1200 × 1000</option>
+
+<option value="custom">Eigene Palette</option>
+
+</select>
+
+<label>Länge (mm)</label>
+<input id="length" type="number">
+
+<label>Breite (mm)</label>
+<input id="width" type="number">
+
+<label>Höhe (mm)</label>
+<input id="height" type="number">
+
+<label>Gewicht (kg)</label>
+<input id="weight" type="number">
+
+<label>Max. Stapelhöhe (mm)</label>
+<input id="maxHeight" type="number" value="1800">
+
+<button id="calculate">
+Optimieren
+</button>
+
+</section>
+
+<section class="right">
+
+<div class="cards">
 
 <div class="card">
 
-<label>Kartonlänge (mm)</label>
-<input type="number" id="length">
+<h3>Kartons/Lage</h3>
 
-<label>Kartonbreite (mm)</label>
-<input type="number" id="width">
-
-<label>Kartonhöhe (mm)</label>
-<input type="number" id="height">
-
-<label>Maximale Stapelhöhe (mm)</label>
-<input type="number" id="maxHeight" value="1800">
-
-<button onclick="calculate()">Berechnen</button>
+<p id="layer">0</p>
 
 </div>
 
-<div class="results">
-<h2>Ergebnis</h2>
+<div class="card">
 
-<p>Kartons pro Lage: <span id="layer">0</span></p>
-<p>Lagen: <span id="layers">0</span></p>
-<p>Gesamtkartons: <span id="total">0</span></p>
-<p>Gesamthöhe: <span id="totalHeight">0 mm</span></p>
+<h3>Lagen</h3>
+
+<p id="layers">0</p>
 
 </div>
 
-<canvas id="canvas" width="600" height="400"></canvas>
+<div class="card">
+
+<h3>Gesamt</h3>
+
+<p id="total">0</p>
 
 </div>
+
+<div class="card">
+
+<h3>Auslastung</h3>
+
+<p id="utilization">0 %</p>
+
+</div>
+
+</div>
+
+<canvas id="canvas" width="900" height="600"></canvas>
+
+<div class="layerButtons">
+
+<button>Lage 1</button>
+
+<button>Lage 2</button>
+
+<button>Beste Variante</button>
+
+</div>
+
+</section>
+
+</main>
 
 <script src="app.js"></script>
 
