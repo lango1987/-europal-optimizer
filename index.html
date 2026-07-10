@@ -1,21 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="de">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Europal Optimizer</title>
-
 <link rel="stylesheet" href="style.css">
-
-<link rel="manifest" href="manifest.json">
-
-<meta name="theme-color" content="#1565c0">
-
 </head>
 
 <body>
@@ -27,15 +16,36 @@
 <div class="card">
 
 <label>Kartonlänge (mm)</label>
-
 <input type="number" id="length">
 
 <label>Kartonbreite (mm)</label>
-
 <input type="number" id="width">
 
 <label>Kartonhöhe (mm)</label>
-
 <input type="number" id="height">
 
-<label>Maximale Stapelhöhe (mm)</la
+<label>Maximale Stapelhöhe (mm)</label>
+<input type="number" id="maxHeight" value="1800">
+
+<button onclick="calculate()">Berechnen</button>
+
+</div>
+
+<div class="results">
+<h2>Ergebnis</h2>
+
+<p>Kartons pro Lage: <span id="layer">0</span></p>
+<p>Lagen: <span id="layers">0</span></p>
+<p>Gesamtkartons: <span id="total">0</span></p>
+<p>Gesamthöhe: <span id="totalHeight">0 mm</span></p>
+
+</div>
+
+<canvas id="canvas" width="600" height="400"></canvas>
+
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
