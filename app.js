@@ -1,77 +1,95 @@
 const PALLET_LENGTH = 1200;
-
 const PALLET_WIDTH = 800;
-
 const PALLET_HEIGHT = 144;
 
-const length = Number(document.getElementById("length").value);
+function calculate() {
 
-const width = Number(document.getElementById("width").value);
+    const length = Number(document.getElementById("length").value);
+    const width = Number(document.getElementById("width").value);
+    const height = Number(document.getElementById("height").value);
+    const maxHeight = Number(document.getElementById("maxHeight").value);
 
-const height = Number(document.getElementById("height").value);
+    if (!length || !width || !height || !maxHeight) {
+        alert("Bitte alle Werte eingeben.");
+        return;
+    }
 
-const maxHeight = Number(document.getElementById("maxHeight").value);
+    const normal =
+        Math.floor(PALLET_LENGTH / length) *
+        Math.floor(PALLET_WIDTH / width);
 
-if (!length || !width || !height) {
+    const rotated =
+        Math.floor(PALLET_LENGTH / width) *
+        Math.floor(PALLET_WIDTH / length);
 
-    alert("Bitte alle Kartonmaße eingeben.");
+    let cartonsPerLayer;
+    let boxLength;
+    let boxWidth;
 
-    return;
+    if (rotated > normal) {
+        cartonsPerLayer = rotated;
+        boxLength = width;
+        boxWidth = length;
+    } else {
+        cartonsPerLayer = normal;
+        boxLength = length;
+        boxWidth = width;
+    }
 
+    const layers = Math.floor((maxHeight - PALLET_HEIGHT) / height);
+
+    const total = cartonsPerLayer * layers;
+
+    const totalHeight = layers * height + PALLET_HEIGHT;
+
+    document.getElementById("layer").textContent = cartonsPerLayer;
+    document.getElementById("layers").textContent = layers;
+    document.getElementById("total").textContent = total;
+    document.getElementById("totalHeight").textContent = totalHeight + " mm";
+
+    draw(boxLength, boxWidth);
 }
 
-// Variante 1
+function draw(boxLength, boxWidth) {
 
-const normal =
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
 
-    Math.floor(PALLET_LENGTH / length) *
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    Math.floor(PALLET_WIDTH / width);
+    const scale = Math.min(
+        canvas.width / PALLET_LENGTH,
+        canvas.height / PALLET_WIDTH
+    );
 
-// Variante 2 (gedreht)
+    const palletW = PALLET_LENGTH * scale;
+    const palletH = PALLET_WIDTH * scale;
 
-const rotated =
+    ctx.strokeStyle = "#000";
+    ctx.lineWidth = 2;
+    ctx.strokeRect(20,20,palletW,palletH);
 
-    Math.floor(PALLET_LENGTH / width) *
+    const cols = Math.floor(PALLET_LENGTH / boxLength);
+    const rows = Math.floor(PALLET_WIDTH / boxWidth);
 
-    Math.floor(PALLET_WIDTH / length);
+    const bw = boxLength * scale;
+    const bh = boxWidth * scale;
 
-let cartonsPerLayer;
+    ctx.fillStyle = "#4CAF50";
 
-let boxL;
+    for(let y=0;y<rows;y++){
 
-let boxW;
+        for(let x=0;x<cols;x++){
 
-if (rotated > normal) {
+            ctx.fillRect(
+                20 + x*bw,
+                20 + y*bh,
+                bw-2,
+                bh-2
+            );
 
-    cartonsPerLayer = rotated;
+        }
 
-    boxL = width;
-
-    boxW = length;
-
-} else {
-
-    cartonsPerLayer = normal;
-
-    boxL = length;
-
-    boxW = width;
+    }
 
 }
-
-const layers = Math.floor((maxHeight - PALLET_HEIGHT) / height);
-
-const total = cartonsPerLayer * layers;
-
-const totalHeight = layers * height + PALLET_HEIGHT;
-
-document.getElementById("layer").textContent = cartonsPerLayer;
-
-document.getElementById("layers").textContent = layers;
-
-document.getElementById("total").textContent = total;
-
-document.getElementById("totalHeight").textContent = totalHeight + " mm";
-
-draw(boxL, boxW);
