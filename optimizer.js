@@ -1,66 +1,45 @@
-const PALLETS = {
-    euro: {
-        length: 1200,
-        width: 800,
-        height: 144
-    }
-};
-
 function optimize(boxLength, boxWidth) {
 
-    const pallet = PALLETS.euro;
+    const pallet = getSelectedPallet();
     const variants = [];
 
     getPatterns().forEach(pattern => {
 
-        let l = boxLength;
-        let w = boxWidth;
+        let length = boxLength;
+        let width = boxWidth;
 
-        switch (pattern.id) {
-
-            case "rotated":
-                l = boxWidth;
-                w = boxLength;
-                break;
-
-            case "brick":
-                l = boxLength;
-                w = boxWidth;
-                break;
-
-            case "mixed":
-                l = boxLength;
-                w = boxWidth;
-                break;
-
+        if (pattern.id === "rotated") {
+            length = boxWidth;
+            width = boxLength;
         }
 
-        variants.push(createPattern(pattern, pallet, l, w));
+        variants.push(
+            createPattern(pattern, pallet, length, width)
+        );
 
     });
 
     variants.sort((a, b) => b.cartons - a.cartons);
-    
-    return variants;
 
+    return variants;
 }
 
-function createPattern(pattern, pallet, l, w) {
+function createPattern(pattern, pallet, boxLength, boxWidth) {
 
-    const cols = Math.floor(pallet.length / l);
-    const rows = Math.floor(pallet.width / w);
+    const cols = Math.floor(pallet.length / boxLength);
+    const rows = Math.floor(pallet.width / boxWidth);
 
     const boxes = [];
 
-    for (let y = 0; y < rows; y++) {
+    for (let row = 0; row < rows; row++) {
 
-        for (let x = 0; x < cols; x++) {
+        for (let col = 0; col < cols; col++) {
 
             boxes.push({
-                x: x * l,
-                y: y * w,
-                length: l,
-                width: w,
+                x: col * boxLength,
+                y: row * boxWidth,
+                length: boxLength,
+                width: boxWidth,
                 rotation: 0
             });
 
@@ -70,20 +49,27 @@ function createPattern(pattern, pallet, l, w) {
 
     const cartons = boxes.length;
     const palletArea = pallet.length * pallet.width;
-    const usedArea = cartons * l * w;
-    const utilization = ((usedArea / palletArea) * 100).toFixed(1);
+    const usedArea = cartons * boxLength * boxWidth;
 
     return {
 
         id: pattern.id,
         type: pattern.name,
-        cartons: cartons,
-        cols: cols,
-        rows: rows,
-        boxLength: l,
-        boxWidth: w,
-        utilization: utilization,
-        boxes: boxes
+
+        pallet,
+
+        cartons,
+        cols,
+        rows,
+
+        boxLength,
+        boxWidth,
+
+        utilization: Number(
+            (usedArea / palletArea * 100).toFixed(1)
+        ),
+
+        boxes
 
     };
 
