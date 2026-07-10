@@ -44,6 +44,7 @@ function calculate() {
     document.getElementById("total").textContent = total;
     document.getElementById("utilization").textContent =
         result.utilization.toFixed(1) + " %";
+        drawPalette(result, 1);
 
     // Das Zeichnen bauen wir im nächsten Schritt ein.
 }
