@@ -1,32 +1,60 @@
 const PALLETS = {
-    euro: { length: 1200, width: 800, height: 144 }
+    euro: {
+        length: 1200,
+        width: 800,
+        height: 144
+    }
 };
 
 function optimize(boxLength, boxWidth) {
 
     const pallet = PALLETS.euro;
 
-    const variants = [];
+    const patterns = [];
 
-    variants.push(createPattern("Standard", pallet, boxLength, boxWidth));
-    variants.push(createPattern("Gedreht", pallet, boxWidth, boxLength));
+    patterns.push(createPattern("standard", pallet, boxLength, boxWidth));
+    patterns.push(createPattern("rotated", pallet, boxWidth, boxLength));
 
-    variants.sort((a, b) => b.cartons - a.cartons);
+    patterns.sort((a, b) => b.cartons - a.cartons);
 
-    return variants;
+    return patterns;
 }
 
-function createPattern(name, pallet, l, w) {
+function createPattern(type, pallet, boxLength, boxWidth) {
 
-    const cols = Math.floor(pallet.length / l);
-    const rows = Math.floor(pallet.width / w);
+    const cols = Math.floor(pallet.length / boxLength);
+    const rows = Math.floor(pallet.width / boxWidth);
+
+    const boxes = [];
+
+    for (let row = 0; row < rows; row++) {
+
+        for (let col = 0; col < cols; col++) {
+
+            boxes.push({
+                x: col * boxLength,
+                y: row * boxWidth,
+                length: boxLength,
+                width: boxWidth,
+                rotation: 0
+            });
+
+        }
+
+    }
 
     return {
-        name,
+
+        type,
+
         cols,
+
         rows,
-        cartons: cols * rows,
-        boxLength: l,
-        boxWidth: w
+
+        cartons: boxes.length,
+
+        boxes
+
     };
+
 }
