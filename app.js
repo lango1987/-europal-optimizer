@@ -42,8 +42,11 @@ function showVariants() {
 
         button.className = "variantButton";
 
-        button.innerHTML =
-            `<b>${pattern.type}</b><br>${pattern.cartons} Kartons`;
+        button.innerHTML = `
+    <strong>${pattern.type}</strong><br>
+    📦 ${pattern.cartons} Kartons<br>
+    📐 ${pattern.cols} × ${pattern.rows}
+`;
 
         button.onclick = () => {
 
