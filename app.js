@@ -25,9 +25,21 @@ document.getElementById("calculate").addEventListener("click", () => {
     document.getElementById("total").textContent =
         currentPattern.cartons * layers;
 
-    drawPalette(currentPattern, 1);
+    const palletArea = 1200 * 800;
+    const usedArea =
+        currentPattern.cartons *
+        currentPattern.boxLength *
+        currentPattern.boxWidth;
+
+    document.getElementById("utilization").textContent =
+        ((usedArea / palletArea) * 100).toFixed(1) + " %";
+
+    currentLayer = 1;
+
+    drawPalette(currentPattern, currentLayer);
 
     showVariants();
+
 });
 
 function showVariants() {
@@ -37,19 +49,20 @@ function showVariants() {
     list.innerHTML = "";
 
     patterns.forEach((pattern, index) => {
-        if (index === 0) {
-    button.style.background = "#2E7D32";
-}
 
         const button = document.createElement("button");
 
         button.className = "variantButton";
 
+        if (index === 0) {
+            button.style.background = "#2E7D32";
+        }
+
         button.innerHTML = `
-    <strong>${pattern.type}</strong><br>
-    📦 ${pattern.cartons} Kartons<br>
-    📐 ${pattern.cols} × ${pattern.rows}
-`;
+            <strong>${pattern.type}</strong><br>
+            📦 ${pattern.cartons} Kartons<br>
+            📐 ${pattern.cols} × ${pattern.rows}
+        `;
 
         button.onclick = () => {
 
@@ -65,26 +78,22 @@ function showVariants() {
 
 }
 
-document.getElementById("layer1").onclick = () => {
+document.getElementById("layer1").addEventListener("click", () => {
 
     currentLayer = 1;
 
-    if(currentPattern){
-
-        drawPalette(currentPattern,1);
-
+    if (currentPattern) {
+        drawPalette(currentPattern, currentLayer);
     }
 
-}
+});
 
-document.getElementById("layer2").onclick = () => {
+document.getElementById("layer2").addEventListener("click", () => {
 
     currentLayer = 2;
 
-    if(currentPattern){
-
-        drawPalette(currentPattern,2);
-
+    if (currentPattern) {
+        drawPalette(currentPattern, currentLayer);
     }
 
-}
+});
