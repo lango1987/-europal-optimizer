@@ -9,50 +9,76 @@ const PALLETS = {
 function optimize(boxLength, boxWidth) {
 
     const pallet = PALLETS.euro;
+    const variants = [];
 
-    const patterns = [];
+    getPatterns().forEach(pattern => {
 
-    patterns.push(createPattern("standard", pallet, boxLength, boxWidth));
-    patterns.push(createPattern("rotated", pallet, boxWidth, boxLength));
+        let l = boxLength;
+        let w = boxWidth;
 
-    patterns.sort((a, b) => b.cartons - a.cartons);
+        switch(pattern.id){
 
-    return patterns;
+            case "rotated":
+                l = boxWidth;
+                w = boxLength;
+                break;
+
+            case "brick":
+                l = boxLength;
+                w = boxWidth;
+                break;
+
+            case "mixed":
+                l = boxLength;
+                w = boxWidth;
+                break;
+
+        }
+
+        variants.push(createPattern(pattern, pallet, l, w));
+
+    });
+
+    variants.sort((a,b)=>b.cartons-a.cartons);
+
+    return variants;
+
 }
 
-function createPattern(type, pallet, boxLength, boxWidth) {
+function createPattern(pattern,pallet,l,w){
 
-    const cols = Math.floor(pallet.length / boxLength);
-    const rows = Math.floor(pallet.width / boxWidth);
+    const cols=Math.floor(pallet.length/l);
+    const rows=Math.floor(pallet.width/w);
 
-    const boxes = [];
+    const boxes=[];
 
-    for (let row = 0; row < rows; row++) {
+    for(let y=0;y<rows;y++){
 
-        for (let col = 0; col < cols; col++) {
+        for(let x=0;x<cols;x++){
 
             boxes.push({
-                x: col * boxLength,
-                y: row * boxWidth,
-                length: boxLength,
-                width: boxWidth,
-                rotation: 0
+
+                x:x*l,
+                y:y*w,
+                length:l,
+                width:w,
+                rotation:0
+
             });
 
         }
 
     }
 
-    return {
+    return{
 
-        type,
-
+        id:pattern.id,
+        type:pattern.name,
+        cartons:boxes.length,
         cols,
-
         rows,
-
-        cartons: boxes.length,
-
+        boxLength:l,
+        boxWidth:w,
         boxes
 
     };
