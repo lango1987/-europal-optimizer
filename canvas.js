@@ -1,4 +1,4 @@
-function drawPalette(result, layer = 1) {
+function drawPalette(pattern, layer = 1) {
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -8,47 +8,51 @@ function drawPalette(result, layer = 1) {
     const palletLength = 1200;
     const palletWidth = 800;
 
+    const margin = 20;
+
     const scale = Math.min(
-        (canvas.width - 40) / palletLength,
-        (canvas.height - 40) / palletWidth
+        (canvas.width - margin * 2) / palletLength,
+        (canvas.height - margin * 2) / palletWidth
     );
 
-    const offsetX = 20;
-    const offsetY = 20;
+    const palletX = margin;
+    const palletY = margin;
 
-    // Palette
+    // Palette zeichnen
     ctx.strokeStyle = "#444";
     ctx.lineWidth = 3;
     ctx.strokeRect(
-        offsetX,
-        offsetY,
+        palletX,
+        palletY,
         palletLength * scale,
         palletWidth * scale
     );
 
-    const boxW = result.length * scale;
-    const boxH = result.width * scale;
+    const boxW = pattern.boxLength * scale;
+    const boxH = pattern.boxWidth * scale;
 
     ctx.fillStyle = "#4CAF50";
+    ctx.strokeStyle = "#2E7D32";
 
-    for (let row = 0; row < result.rows; row++) {
+    for (let row = 0; row < pattern.rows; row++) {
 
-        let shift = 0;
+        let offset = 0;
 
         // Lage 2 wird versetzt dargestellt
         if (layer === 2 && row % 2 === 0) {
-            shift = boxW / 2;
+            offset = boxW / 2;
         }
 
-        for (let col = 0; col < result.cols; col++) {
+        for (let col = 0; col < pattern.cols; col++) {
 
-            ctx.fillRect(
-                offsetX + shift + col * boxW,
-                offsetY + row * boxH,
-                boxW - 2,
-                boxH - 2
-            );
+            const x = palletX + offset + col * boxW;
+            const y = palletY + row * boxH;
 
+            // Nicht über den Palettenrand zeichnen
+            if (x + boxW <= palletX + palletLength * scale) {
+                ctx.fillRect(x, y, boxW - 2, boxH - 2);
+                ctx.strokeRect(x, y, boxW - 2, boxH - 2);
+            }
         }
     }
 }
