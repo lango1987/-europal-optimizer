@@ -1,3 +1,5 @@
+alert("app.js geladen");
+
 const PALLET_LENGTH = 1200;
 const PALLET_WIDTH = 800;
 const PALLET_HEIGHT = 144;
